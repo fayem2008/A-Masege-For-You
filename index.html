@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌸 A Message For You 🌸</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient-animation 15s ease infinite;
+            overflow: hidden;
+        }
+
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        /* --- Form Styles --- */
+        #form-section { display: none; }
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #fff;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+        }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 1em;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255, 255, 255, 0.7); }
+        .form-group textarea { height: 120px; resize: none; }
+        .form-group input:focus, .form-group textarea:focus {
+            background-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+        }
+
+        .button-gradient {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            background: linear-gradient(90deg, #ff007f, #ff8c00);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .button-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        .button-gradient:active { transform: scale(0.98); }
+
+        .link-container { display: none; margin-top: 30px; text-align: center; }
+        .link-container h3 { color: #fff; margin-bottom: 10px; }
+        .link-display {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            word-wrap: break-word;
+            font-size: 0.9em;
+            color: #fff;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .copy-button { background: linear-gradient(90deg, #da70d6, #ff1493); }
+
+        /* --- Message & Animation Styles --- */
+        #message-section { display: none; }
+        .envelope-scene {
+            perspective: 1000px;
+        }
+        .envelope-wrapper {
+            width: 300px;
+            height: 190px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s ease-in-out;
+            cursor: pointer;
+            margin: 0 auto;
+        }
+        .envelope-wrapper.open {
+            transform: rotateY(180deg);
+            cursor: default;
+        }
+        .envelope-front, .envelope-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+        }
+        .envelope-front {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .envelope-front .heart-icon {
+            font-size: 4em;
+            color: #ff4081;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        .envelope-back {
+            transform: rotateY(180deg);
+            background: transparent;
+        }
+
+        .message-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 25px;
+            /* NEW PREMIUM BACKGROUND */
+            background: linear-gradient(145deg, #1d1033 0%, #46225f 100%);
+            background-image: radial-gradient(circle at 25px 25px, rgba(255, 255, 255, 0.1) 1px, transparent 0),
+                              radial-gradient(circle at 75px 75px, rgba(255, 255, 255, 0.08) 1px, transparent 0);
+            background-size: 100px 100px;
+            border-radius: 15px;
+            box-sizing: border-box;
+            color: #fff;
+            text-align: left;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5em;
+            overflow-y: auto;
+            /* NEW SOFT GLOW */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 105, 180, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        /* NEW TEXT ANIMATION STYLES */
+        .message-text span, .sender-name span {
+             opacity: 0;
+             animation: fadeInChar 0.5s forwards;
+        }
+        @keyframes fadeInChar {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message-text { margin-bottom: 10px; }
+        .sender-name {
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: right;
+            display: block; /* Important for span animation */
+        }
+        .click-instruction {
+            margin-top: 20px;
+            color: #ad1852;
+            font-size: 1em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="container" id="main-container">
+
+        <div id="form-section">
+            <h1>Create Your Magic Letter</h1>
+            <div class="form-group">
+                <label for="sender-name">💌 Your Name (আপনার নাম)</label>
+                <input type="text" id="sender-name" placeholder="E.g., Riaz">
+            </div>
+            <div class="form-group">
+                <label for="heartfelt-message">💖 Your Heartfelt Message (আপনার বার্তা)</label>
+                <textarea id="heartfelt-message" placeholder="My dearest..."></textarea>
+            </div>
+            <button class="button-gradient" onclick="generateLink()">✨ GENERATE MAGIC LINK</button>
+            
+            <div class="link-container" id="link-section">
+                <h3>Your Magical Love Letter Link!</h3>
+                <div class="link-display" id="generated-link"></div>
+                <button class="button-gradient copy-button" onclick="copyLink(this)">COPY ✨</button>
+            </div>
+        </div>
+
+        <div id="message-section">
+            <div class="envelope-scene">
+                <div class="envelope-wrapper" onclick="openLetter(this)">
+                    <div class="envelope-front">
+                        <div class="heart-icon">💌</div>
+                        <p class="click-instruction">Click to Open</p>
+                    </div>
+                    <div class="envelope-back">
+                        <div class="message-content" id="message-content">
+                            <p class="message-text" id="loveMessage"></p>
+                            <p class="sender-name" id="senderName"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Floating Hearts Background ---
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let hearts = [];
+        const numHearts = 50;
+
+        function Heart(x, y, size, speed) {
+            this.x = x; this.y = y; this.size = size; this.speed = speed;
+            this.opacity = Math.random() * 0.5 + 0.2;
+        }
+        Heart.prototype.update = function() {
+            this.y -= this.speed;
+            if (this.y < -this.size) {
+                this.y = canvas.height + this.size;
+                this.x = Math.random() * canvas.width;
+            }
+        };
+        Heart.prototype.draw = function() {
+            ctx.fillStyle = `rgba(255, 105, 180, ${this.opacity})`;
+            ctx.beginPath();
+            const topCurveHeight = this.size * 0.3;
+            ctx.moveTo(this.x, this.y + topCurveHeight);
+            ctx.bezierCurveTo(this.x, this.y, this.x - this.size / 2, this.y, this.x - this.size / 2, this.y + topCurveHeight);
+            ctx.bezierCurveTo(this.x - this.size / 2, this.y + (this.size + topCurveHeight) / 2, this.x, this.y + this.size, this.x, this.y + this.size);
+            ctx.bezierCurveTo(this.x, this.y + this.size, this.x + this.size / 2, this.y + (this.size + topCurveHeight) / 2, this.x + this.size / 2, this.y + topCurveHeight);
+            ctx.bezierCurveTo(this.x + this.size / 2, this.y, this.x, this.y, this.x, this.y + topCurveHeight);
+            ctx.fill(); ctx.closePath();
+        };
+        function initHearts() {
+            for (let i = 0; i < numHearts; i++) {
+                const x = Math.random() * canvas.width; const y = Math.random() * canvas.height;
+                const size = Math.random() * 15 + 5; const speed = Math.random() * 1 + 0.5;
+                hearts.push(new Heart(x, y, size, speed));
+            }
+        }
+        function animateHearts() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hearts.forEach(heart => { heart.update(); heart.draw(); });
+            requestAnimationFrame(animateHearts);
+        }
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            hearts = []; initHearts();
+        });
+        initHearts();
+        animateHearts();
+
+        // --- Love Letter Logic ---
+        function animateText(element) {
+            const text = element.textContent;
+            element.innerHTML = '';
+            text.split('').forEach((char, index) => {
+                const span = document.createElement('span');
+                span.textContent = char === ' ' ? '\u00A0' : char; // Handle spaces
+                span.style.animationDelay = `${index * 0.03}s`;
+                element.appendChild(span);
+            });
+        }
+        
+        let isOpened = false;
+        function openLetter(envelope) {
+            if (isOpened) return;
+            isOpened = true;
+            envelope.classList.add('open');
+            setTimeout(() => {
+                animateText(document.getElementById('loveMessage'));
+                animateText(document.getElementById('senderName'));
+            }, 1000); // Start animation after flip
+        }
+
+        function generateLink() {
+            const senderName = document.getElementById('sender-name').value;
+            const heartfeltMessage = document.getElementById('heartfelt-message').value;
+            if (!senderName || !heartfeltMessage) {
+                alert("Please enter both your name and your message."); return;
+            }
+            const data = { name: senderName, message: heartfeltMessage };
+            const encodedData = btoa(encodeURIComponent(JSON.stringify(data)));
+            const generatedLink = `${window.location.origin}${window.location.pathname}?data=${encodedData}`;
+            document.getElementById('generated-link').textContent = generatedLink;
+            document.getElementById('link-section').style.display = 'block';
+        }
+
+        function copyLink(buttonElement) {
+            const linkElement = document.getElementById('generated-link');
+            const range = document.createRange();
+            range.selectNodeContents(linkElement);
+            const selection = window.getSelection();
+            selection.removeAllRanges(); selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                buttonElement.textContent = 'COPIED! ✨';
+                setTimeout(() => { buttonElement.textContent = 'COPY ✨'; }, 2000);
+            } catch (err) { alert("Failed to copy the link."); } 
+            finally { selection.removeAllRanges(); }
+        }
+
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const encodedData = params.get('data');
+            if (encodedData) {
+                document.getElementById('form-section').style.display = 'none';
+                document.getElementById('message-section').style.display = 'block';
+                document.getElementById('main-container').style.background = 'transparent';
+                document.getElementById('main-container').style.border = 'none';
+                document.getElementById('main-container').style.boxShadow = 'none';
+                try {
+                    const decodedData = JSON.parse(decodeURIComponent(atob(encodedData)));
+                    document.getElementById('loveMessage').textContent = decodedData.message;
+                    document.getElementById('senderName').textContent = "- " + decodedData.name;
+                } catch (e) {
+                    document.getElementById('message-section').innerHTML = '<p style="color:#ffc0cb;text-align:center;font-size:1.2em;">Invalid love letter link.</p>';
+                }
+            } else {
+                document.getElementById('form-section').style.display = 'block';
+            }
+        };
+    </script>
+</body>
+</html>
